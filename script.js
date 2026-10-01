@@ -1,0 +1,20 @@
+document.getElementById('yr').textContent=new Date().getFullYear();
+const nv=document.getElementById('nv'),mb=document.getElementById('mb');
+mb.onclick=()=>{const o=nv.classList.toggle('open');mb.setAttribute('aria-expanded',o)};
+const here=location.pathname.split('/').pop()||'index.html';
+nv.querySelectorAll('a').forEach(a=>{if(a.getAttribute('href')===here)a.classList.add('on')});
+document.querySelectorAll('[data-n]').forEach(el=>{const t=+el.dataset.n;let c=0;const s=Math.ceil(t/40);
+const i=setInterval(()=>{c=Math.min(t,c+s);el.textContent=c+(el.dataset.s||'');if(c>=t)clearInterval(i)},30)});
+const fb=document.querySelectorAll('.filters button'),tiles=document.querySelectorAll('.tile'),lb=document.getElementById('lb');
+fb.forEach(b=>b.onclick=()=>{fb.forEach(x=>x.classList.remove('on'));b.classList.add('on');
+tiles.forEach(t=>t.hidden=b.dataset.f!=='all'&&t.dataset.c!==b.dataset.f)});
+if(lb){tiles.forEach(t=>t.onclick=()=>{lb.querySelector('span').textContent=t.dataset.e;lb.querySelector('h3').textContent=t.dataset.t;lb.querySelector('p').textContent=t.dataset.d;lb.classList.add('open')});
+lb.onclick=()=>lb.classList.remove('open');document.onkeydown=e=>{if(e.key==='Escape')lb.classList.remove('open')}}
+const f=document.getElementById('cf');
+if(f)f.onsubmit=e=>{e.preventDefault();let bad=false;
+f.querySelectorAll('[required]').forEach(i=>{const m=i.nextElementSibling;let msg='';
+if(!i.value.trim())msg='Please fill in this field.';
+else if(i.type==='email'&&!/^\S+@\S+\.\S+$/.test(i.value))msg='Enter a valid email address.';
+else if(i.type==='tel'&&!/^[+\d][\d\s-]{6,}$/.test(i.value))msg='Enter a valid phone number.';
+m.textContent=msg;if(msg)bad=true});
+if(!bad){document.getElementById('res').innerHTML='<div class="ok">Thank you, '+f.name.value.trim()+'. Our admissions office will contact you within two working days.</div>';f.reset()}};
